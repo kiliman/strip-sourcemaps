@@ -1,0 +1,39 @@
+{
+  "name": "strip-sourcemaps",
+  "version": "0.1.0",
+  "description": "A CLI to strip server code from sourcemaps",
+  "author": "Michael J. Carter <kiliman@gmail.com> (https://kiliman.dev/)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kiliman/rmx-cli.git"
+  },
+  "keywords": [
+    "cli",
+    "sourcemaps"
+  ],
+  "type": "module",
+  "main": "dist/index.mjs",
+  "bin": {
+    "strip-sourcemaps": "dist/index.mjs"
+  },
+  "files": [
+    "dist/**/*.js",
+    "README.md",
+    "LICENSE.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "esbuild src/index.ts --platform=node --format=esm --target=node18 --outfile=dist/index.mjs",
+    "start": "node dist/index.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "esbuild": "^0.19.8",
+    "prettier": "^3.1.0"
+  },
+  "dependencies": {
+    "@ts-ast-parser/core": "^0.6.3"
+  }
+}

@@ -23,3 +23,41 @@ npx strip-sourcemaps [options]
 - `-i, --imports <string>` (default: `*`): Define a comma-separated list of imports to strip (supports `*` or an empty string).
 
 Feel free to customize the CLI options to suit your specific requirements.
+
+## Caveats
+
+This initial version has the following limitations.
+
+- Only the exported functions (default `loader` and `action`) are stripped. Any
+  functions defined outside of these will not be stripped even if they are called
+  by the `loader` or `action`
+- Comments are not stripped that are outside of the exported function, so any
+  secrets that are in comments may be exposed
+
+```ts
+// this comment will NOT be stripped out
+
+function getMessage() {
+  // this function will NOT be stripped out even though it's called by the loader
+  return 'Hello World'
+}
+
+export function loader() {
+  // the loader function WILL be stripped out
+  const message = getMessage()
+  return json({ message })
+}
+```
+
+To verify what is removed, use the `--output` CLI argument to save the stripped
+source files for review.
+
+```bash
+npx strip-sourcemaps --output ./stripped
+```
+
+## Work in progress
+
+Future versions should eliminate these limitations. All comments outside of
+functions will be removed by default. The tool will also trace external references
+and strip functions and expressions that are only referenced by the server code.
